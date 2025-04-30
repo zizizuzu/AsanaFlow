@@ -14,7 +14,7 @@ object DayTabStyles {
             isSelected -> MaterialTheme.colorScheme.primary
             type == DayType.TODAY -> MaterialTheme.colorScheme.secondaryContainer
             type == DayType.FUTURE -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-            else -> MaterialTheme.colorScheme.surface
+            else -> MaterialTheme.colorScheme.background
         }
     }
 

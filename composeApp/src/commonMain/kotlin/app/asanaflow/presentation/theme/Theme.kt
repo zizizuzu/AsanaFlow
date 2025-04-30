@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import app.asanaflow.domain.model.ThemeMode
 
 val DarkColorScheme = darkColorScheme(
     primary = DarkPrimary,
@@ -47,13 +48,14 @@ expect fun ApplySystemUi(
 
 @Composable
 fun AsanaFlowTheme(
+    themeMode: ThemeMode,
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = getColorScheme(darkTheme, dynamicColor)
-
-    ApplySystemUi(colorScheme, darkTheme)
+    val isDarkTheme = themeMode == ThemeMode.DARK || themeMode == ThemeMode.DYNAMIC_DARK //TODO need to update all states
+    val colorScheme = getColorScheme(isDarkTheme, dynamicColor)
+    ApplySystemUi(colorScheme, isDarkTheme)
 
     MaterialTheme(
         colorScheme = colorScheme,

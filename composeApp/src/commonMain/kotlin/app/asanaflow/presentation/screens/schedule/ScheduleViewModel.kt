@@ -30,7 +30,8 @@ class ScheduleViewModel(
                 ScheduleEvent.OpenTraining.Easy,
                 ScheduleEvent.OpenTraining.Medium,
                 ScheduleEvent.OpenTraining.Hard -> {
-                    sendEffect(ScheduleEffect.NavigateToTraining)
+                    //TODO will be realised in future
+//                    sendEffect(ScheduleEffect.NavigateToTraining)
                 }
             }
         }
