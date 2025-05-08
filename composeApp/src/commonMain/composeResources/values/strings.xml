@@ -5,6 +5,7 @@
 
     <string name="content_description_bottom_bar_navigation_home">Home Button</string>
     <string name="content_description_bottom_bar_navigation_settings">Settings Button</string>
+    <string name="content_description_button_back">Back Button</string>
 
 
     <string name="schedule_screen_practice_card_quick">Quick Boost</string>

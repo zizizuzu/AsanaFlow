@@ -11,36 +11,42 @@ import app.asanaflow.presentation.components.FullScreenLoader
 import app.asanaflow.presentation.screens.schedule.components.ScheduleContentComponent
 import app.asanaflow.presentation.screens.schedule.model.ScheduleEffect
 import app.asanaflow.presentation.screens.schedule.model.ScheduleEvent
-import org.koin.compose.koinInject
 
 @Composable
-fun HomeScreen(
-    viewModel: ScheduleViewModel = koinInject(),
+fun ScheduleScreen(
+    viewModel: ScheduleViewModel,
     openPreviewTrainingAction: () -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    var initialPage by remember { mutableIntStateOf(-1) }
+    var initialPage by remember {
+        val index = if (state.selectedId.isNotBlank()) {
+            state.days
+                .indexOfFirst { it.id == state.selectedId }
+                .coerceAtLeast(-1)
+        } else {
+            -1
+        }
+
+        mutableIntStateOf(index)
+    }
 
     LaunchedEffect(Unit) {
-        viewModel.effect.collect{ effect->
-            when(effect){
+        viewModel.effect.collect { effect ->
+            when (effect) {
                 is ScheduleEffect.NavigateToTraining -> openPreviewTrainingAction.invoke()
             }
         }
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.sendEvent(ScheduleEvent.LoadInitialDays)
-    }
-
-    LaunchedEffect(
-        state.days.isNotEmpty() &&
-                state.selectedId.isNotBlank() &&
-                initialPage == -1
-    ) {
-        initialPage = state.days
-            .indexOfFirst { it.id == state.selectedId }
-            .coerceAtLeast(-1)
+    if (initialPage == -1) {
+        LaunchedEffect(Unit) {
+            viewModel.sendEvent(ScheduleEvent.LoadInitialDays)
+        }
+        LaunchedEffect(state.days.isEmpty() && state.selectedId.isBlank()) {
+            initialPage = state.days
+                .indexOfFirst { it.id == state.selectedId }
+                .coerceAtLeast(-1)
+        }
     }
 
     when {
@@ -54,7 +60,4 @@ fun HomeScreen(
         }
     }
 }
-
-
-
 

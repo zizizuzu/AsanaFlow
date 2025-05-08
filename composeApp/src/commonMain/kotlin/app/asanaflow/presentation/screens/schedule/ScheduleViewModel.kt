@@ -1,6 +1,7 @@
 package app.asanaflow.presentation.screens.schedule
 
 import androidx.lifecycle.viewModelScope
+import app.asanaflow.domain.Result
 import app.asanaflow.domain.model.DayItem
 import app.asanaflow.domain.usecase.LoadDayScheduleUseCase
 import app.asanaflow.presentation.base.BaseViewModel
@@ -10,7 +11,6 @@ import app.asanaflow.presentation.screens.schedule.model.ScheduleEffect
 import app.asanaflow.presentation.screens.schedule.model.ScheduleEvent
 import app.asanaflow.presentation.screens.schedule.model.ScheduleState
 import kotlinx.coroutines.launch
-import app.asanaflow.domain.Result
 
 class ScheduleViewModel(
     private val loadDaysUseCase: LoadDayScheduleUseCase,
@@ -30,16 +30,17 @@ class ScheduleViewModel(
                 ScheduleEvent.OpenTraining.Easy,
                 ScheduleEvent.OpenTraining.Medium,
                 ScheduleEvent.OpenTraining.Hard -> {
-                    //TODO will be realised in future
-//                    sendEffect(ScheduleEffect.NavigateToTraining)
+                    sendEffect(ScheduleEffect.NavigateToTraining)
                 }
             }
         }
     }
 
     private fun loadInitialDays() {
-        viewModelScope.launch {
-            updateDayListUi(loadDaysUseCase.loadInitialItems())
+        if (state.value.days.isEmpty()) {
+            viewModelScope.launch {
+                updateDayListUi(loadDaysUseCase.loadInitialItems())
+            }
         }
     }
 

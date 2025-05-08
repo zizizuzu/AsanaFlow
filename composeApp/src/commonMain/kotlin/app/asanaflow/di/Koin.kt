@@ -3,6 +3,7 @@ package app.asanaflow.di
 import app.asanaflow.data.local.datastore.ThemeDataStore
 import app.asanaflow.data.local.datastore.ThemeDataStoreImpl
 import app.asanaflow.data.repository.DaysRepositoryImpl
+import app.asanaflow.di.scopes.ScheduleScope
 import app.asanaflow.domain.repository.DaysRepository
 import app.asanaflow.domain.usecase.LoadDayScheduleUseCase
 import app.asanaflow.domain.usecase.LoadDayScheduleUseCaseImpl
@@ -24,9 +25,11 @@ val domainModule = module {
 }
 
 val presentationModule = module {
+    scope<ScheduleScope> {
+        scoped { ScheduleViewModel(get(), get()) }
+    }
     factory { DayMapper() }
     factoryOf(::SettingsViewModel)
-    factoryOf(::ScheduleViewModel)
 }
 
 fun initKoin(
